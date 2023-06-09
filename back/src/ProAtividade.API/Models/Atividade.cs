@@ -12,11 +12,8 @@ namespace ProAtividade.API.Models
 
         public string Descricao { get; set; }
 
-        public string Pioridade { get; set; }
-        public Atividade()
-        {
-            
-        }
+        public Prioridade Pioridade { get; set; }
+        public Atividade() {}
 
         public Atividade(int id)
         {
