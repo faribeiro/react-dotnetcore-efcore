@@ -5,7 +5,7 @@
 namespace ProAtividade.API.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,7 @@ namespace ProAtividade.API.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Titulo = table.Column<string>(type: "TEXT", nullable: false),
                     Descricao = table.Column<string>(type: "TEXT", nullable: false),
-                    Pioridade = table.Column<int>(type: "INTEGER", nullable: false)
+                    Prioridade = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

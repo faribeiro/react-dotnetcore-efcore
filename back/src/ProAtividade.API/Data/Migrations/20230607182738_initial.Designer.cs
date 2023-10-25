@@ -11,7 +11,7 @@ namespace ProAtividade.API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20230607182738_initial")]
-    partial class initial
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,7 @@ namespace ProAtividade.API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Pioridade")
+                    b.Property<int>("Prioridade")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Titulo")
