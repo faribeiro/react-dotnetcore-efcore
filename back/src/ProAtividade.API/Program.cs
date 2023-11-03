@@ -1,17 +1,35 @@
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Components.Web;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using ProAtividade.API.Data;
+using ProAtividade.Domain.Interfaces.Repositories;
+using ProAtividade.Data.Repositories;
+using ProAtividade.Domain.Interfaces.Services;
+using ProAtividade.Domain.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<DataContext>(
+builder.Services.AddDbContext<ProAtividade.Data.Context.DataContext>(
     options => options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );
+
+builder.Services.AddScoped<IAtividadeRepo, AtividadeRepo>();
+builder.Services.AddScoped<IGeralRepo, GeralRepo>();
+builder.Services.AddScoped<IAtividadeService, AtividadeServices>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => 
