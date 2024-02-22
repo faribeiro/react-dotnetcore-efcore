@@ -1,7 +1,10 @@
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
-import { NavLink} from 'react-router-dom';
+import { NavLink, useLocation} from 'react-router-dom';
 
-export default function Menu() {
+const Menu: React.FC = () => {
+  const getActiveRoute = useLocation().pathname ? 'Active' : '';
+
+
   return (
     <Navbar bg='dark' expand='lg' variant='dark'>
       <Container>
@@ -12,15 +15,15 @@ export default function Menu() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link 
-                className={(navData) => navData.isActive ? 'Active' : '' } 
+                className={getActiveRoute} 
                 as={NavLink} 
-                to='/cliente/lista'>
+                to='/cliente'>
                 Clientes
             </Nav.Link>
             <Nav.Link 
-              className={(navData) => navData.isActive ? 'Active' : '' } 
+              className={getActiveRoute} 
               as={NavLink} 
-              to='/atividade/lista'>
+              to='/atividade'>
                 Atividades
             </Nav.Link>
           </Nav>
@@ -47,3 +50,5 @@ export default function Menu() {
     </Navbar>
   )
 }
+
+export default Menu;

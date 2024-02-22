@@ -2,8 +2,9 @@ import React from 'react'
 import TitlePage from '../../components/TitlePage'
 import { Card, Col, Row } from 'react-bootstrap'
 
-export default function Dashboard() {
+const Dashboard: React.FC = () => {
   return (
+    
     <>
         <TitlePage title='Dashboard'/>
         <div className='mt-3'>
@@ -56,3 +57,5 @@ export default function Dashboard() {
         
   )
 }
+
+export default Dashboard;

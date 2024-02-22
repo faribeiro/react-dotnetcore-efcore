@@ -4,29 +4,36 @@ import AtividadeForm from './AtividadeForm';
 import AtividadeLista from './AtividadeLista';
 import api from '../../api/atividade';
 import TitlePage from '../../components/TitlePage';
+import { IAtividade, Prioridade } from '../../model/atividade';
 
-export default function Atividade() {
+const atividadeInicial: IAtividade = {
+  id: 0,
+  titulo: '',
+  prioridade: Prioridade.NaoDefinido,
+  descricao: '',
+} 
+
+const Atividade = () => {
   const [showAtividadeModal, setShowAtividadeModal] = useState(false);
   const [smShowConfirmModal, setSmShowConfirmModal] = useState(false);
   
-  const [atividades, setAtividades] = useState([])
-  const [atividade, setAtividade] = useState({id:0})
+  const [atividades, setAtividades] = useState<IAtividade[]>([])
+  const [atividade, setAtividade] = useState<IAtividade>(atividadeInicial)
   
   const handleAtividadeModal = () => 
     setShowAtividadeModal(!showAtividadeModal);
 
-  const handleConfirmModal = (id) => {
-    if(id !== 0 && id !== undefined) {
-      const atividade = atividades.filter
-            (atividade => atividade.id === id
-        )
-      setAtividade(atividade[0])
-    }
-    else {
-      setAtividade({id:0})
-    }
-    setSmShowConfirmModal(!smShowConfirmModal);  
-  }
+  const handleConfirmModal = (id: number|void) => {
+        if ( id !== 0 && id !== undefined) {
+            const atividade =  atividades.filter(
+                (atividade) => atividade.id === id
+            );
+            setAtividade(atividade[0]);
+        } else {
+            setAtividade(atividadeInicial);
+        }
+        setSmShowConfirmModal(!smShowConfirmModal);
+    };
 
   const pegaTodasAtividades = async () => {
     const response = await api.get('atividade');
@@ -34,7 +41,7 @@ export default function Atividade() {
   }
 
   const novaAtividade = () => {
-    setAtividade({id: 0})
+    setAtividade(atividadeInicial)
     handleAtividadeModal();
   }
 
@@ -46,7 +53,7 @@ export default function Atividade() {
     getAtividades();
   },[])
 
-  const addAtividade = async (ativ) => {
+  const addAtividade = async (ativ: IAtividade) => {
     handleAtividadeModal();
     const response = await api.post('atividade', ativ)
     console.log(response.data)
@@ -54,31 +61,33 @@ export default function Atividade() {
   }
 
   const cancelarAtividade = () => {
-    setAtividade({id: 0})
+    setAtividade(atividadeInicial)
     handleAtividadeModal();
   }
 
-  const atualizarAtividade = async (ativ) => {
+  const atualizarAtividade = async (ativ: IAtividade) => {
     handleAtividadeModal();
     const response = await api.put(`atividade/${ativ.id}`, ativ) 
     const {id} = response.data
     setAtividades(
       atividades.map((item) => (item.id === id ? response.data : item ))
     )
-    setAtividade({id: 0})
+    setAtividade(atividadeInicial)
   }
 
-  const deletarAtividade = async (id) => {
+  const deletarAtividade = async (id: number) => {
     handleConfirmModal(0)
     if (await api.delete(`atividade/${id}`))
     {
-      const atividadesFiltradas = atividades.filter(atividade => atividade.id !== id)
+      const atividadesFiltradas = atividades.filter(
+          (atividade) => atividade.id !== id 
+        )
           setAtividades([...atividadesFiltradas])
     }
   }
   
-  const pegarAtividade = (id) => {
-    const atividade = atividades.filter(atividade => atividade.id === id)
+  const pegarAtividade = (id: number) => {
+    const atividade = atividades.filter((atividade) => atividade.id === id)
     setAtividade(atividade[0])
     handleAtividadeModal();
   }
@@ -111,15 +120,16 @@ export default function Atividade() {
             cancelarAtividade={cancelarAtividade}
             atualizarAtividade={atualizarAtividade}
             ativSelecionada={atividade}
-            atividades={atividades}
           />
         </Modal.Body>
       </Modal>  
 
       <Modal 
           size='sm'
-          show={smShowConfirmModal} 
-          onHide={handleConfirmModal}>
+          show={smShowConfirmModal}
+          onHide={handleConfirmModal}
+      >
+        
         <Modal.Header closeButton>
           <Modal.Title>
               Excluindo Atividade{' '}
@@ -153,3 +163,4 @@ export default function Atividade() {
   );
 }
 
+export default Atividade; 
